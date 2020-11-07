@@ -19,7 +19,7 @@
         </el-form-item>
         <!-- 登录按钮 -->
         <el-form-item>
-          <el-button type="primary" style="width:100%;" @click.native.prevent="handleClick">登录</el-button>
+          <el-button type="primary" style="width:100%;" @click.native.prevent="handleClick" :loading="isLogin">登录</el-button>
           
         </el-form-item>
         <!-- 七天登录和忘记密码 -->
@@ -64,11 +64,19 @@ export default class Login extends Vue{
       trigger:'blur'
     }],
   };
-
+  @Provide() isLogin:boolean = false;
   handleClick():void{
     (this.$refs["ruleForm"] as any).validate((valid:boolean)=>{
       if(valid){
-        console.log("校验通过")
+        console.log("校验通过");
+        this.isLogin = true;
+        (this as any).$axios.post("/api/users/login",this.ruleForm).then((res:any)=>{
+          console.log(res);
+          this.isLogin = false;
+          localStorage.setItem('tsToken',res.data.token);
+        }).catch(()=>{
+          this.isLogin = false;
+        })
       }
     })
   }

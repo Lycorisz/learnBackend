@@ -1,6 +1,6 @@
 import axios,{AxiosResponse,AxiosRequestConfig} from 'axios';
 import {Message} from 'element-ui';
-
+import router from '@/router'
 // 创建axios 实例
 
 const service = axios.create({
@@ -11,6 +11,9 @@ const service = axios.create({
 
 // 请求拦截
 service.interceptors.request.use((config:AxiosRequestConfig)=>{
+  if(localStorage.tsToken){
+    config.headers.Authorization = localStorage.tsToken;
+  }
   return config;
 },(err:any)=>{
   Promise.reject(err);
@@ -26,8 +29,8 @@ service.interceptors.response.use((res:AxiosResponse)=>{
     switch(err.response.status){
      case 401:
           errMsg = '登录状态失效，请重新登录';
-          // localStorage.removeItem('tsToken');
-          // router.push('/login');
+          localStorage.removeItem('tsToken');
+          router.push('/login');
           break;
         case 403:
           errMsg = '拒绝访问';
