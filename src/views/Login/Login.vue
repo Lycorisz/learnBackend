@@ -36,12 +36,15 @@
 
 <script lang="ts">
 import LoginHeader from './LoginHeader.vue';
+import {State,Action,Mutation,Getter} from 'vuex-class';
 import {Component,Vue,Provide}from'vue-property-decorator'
 @Component({
   components:{LoginHeader}
 })
 
 export default class Login extends Vue{
+  // 存储用户信息
+  @Action("setUser") setUser:any;
   @Provide() ruleForm:{
     username:String;
     pwd:String;
@@ -74,6 +77,8 @@ export default class Login extends Vue{
           console.log(res);
           this.isLogin = false;
           localStorage.setItem('tsToken',res.data.token);
+          this.setUser(res.data.token);
+          this.$router.push("/");
         }).catch(()=>{
           this.isLogin = false;
         })

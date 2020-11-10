@@ -18,7 +18,7 @@ service.interceptors.request.use((config:AxiosRequestConfig)=>{
 },(err:any)=>{
   Promise.reject(err);
 })
-
+  
 // 响应拦截
 
 service.interceptors.response.use((res:AxiosResponse)=>{
