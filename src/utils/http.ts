@@ -1,14 +1,15 @@
 import axios,{AxiosResponse,AxiosRequestConfig} from 'axios';
+import qs from 'qs';
 import {Message} from 'element-ui';
 import router from '@/router'
 // 创建axios 实例
-
+axios.defaults.withCredentials = true;
 const service = axios.create({
   // baseURL: baseURL,
   timeout: 10000
   // headers: headers,
 });
-
+// axios.defaults.headers.post['Content-Type']='application/x-www-form-urlencoded'
 // 请求拦截
 service.interceptors.request.use((config:AxiosRequestConfig)=>{
   if(localStorage.tsToken){

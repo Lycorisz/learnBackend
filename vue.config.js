@@ -9,7 +9,7 @@ module.exports = {
     proxy: {
       // 配置跨域
       '/api': {
-        target: 'https://vuets-api.herokuapp.com/api/',
+        target: 'http://192.168.12.13:8080/',
         ws: true,
         changOrigin: true,
         pathRewrite: {

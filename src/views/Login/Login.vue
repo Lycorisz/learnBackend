@@ -7,13 +7,13 @@
         </div>
         <!-- 账号-->
         <el-form-item prop="username">
-          <el-input type="text" v-model="ruleForm.username" auto-complete="off" placeholder="账号">
+          <el-input type="text" v-model="ruleForm.loginName" auto-complete="off" placeholder="账号">
             <i slot="prefix" class="fa fa-user-o"></i>
           </el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="pwd">
-          <el-input type="password" v-model="ruleForm.pwd" auto-complete="off" placeholder="密码">
+          <el-input type="password" v-model="ruleForm.password" auto-complete="off" placeholder="密码">
             <i slot="prefix" class="fa fa-lock"></i>
           </el-input>
         </el-form-item>
@@ -44,24 +44,24 @@ import {Component,Vue,Provide}from'vue-property-decorator'
 
 export default class Login extends Vue{
   // 存储用户信息
-  @Action("setUser") setUser:any;
+  // @Action("setUser") setUser:any;
   @Provide() ruleForm:{
-    username:String;
-    pwd:String;
-    autoLogin:boolean;
+    loginName:String;
+    password:String;
+    // autoLogin:boolean;
   }={
-    username:'',
-    pwd:'',
-    autoLogin:true
+    loginName:'',
+    password:'',
+    // autoLogin:true
   };
 
   @Provide() rules ={
-    username:[{
+    loginName:[{
       required:true,
       message:'请输入账号',
       trigger:'blur'
     }],
-    pwd:[{
+    password:[{
       required:true,
       message:'请输入密码',
       trigger:'blur'
@@ -73,15 +73,30 @@ export default class Login extends Vue{
       if(valid){
         console.log("校验通过");
         this.isLogin = true;
-        (this as any).$axios.post("/api/users/login",this.ruleForm).then((res:any)=>{
+        let param = new URLSearchParams();
+        param.append('loginName', 'zzd');
+        param.append('password', '111111');
+        (this as any).$axios.post("/api/login",param)
+        .then((res:any) => {
           console.log(res);
+          let token = this.$cookies.get('JSSESSIONID');
+          localStorage.setItem('token',token);
           this.isLogin = false;
-          localStorage.setItem('tsToken',res.data.token);
-          this.setUser(res.data.token);
-          this.$router.push("/");
-        }).catch(()=>{
+           this.$router.push("/");
+        })
+        .catch(() => {
+          console.error(); 
           this.isLogin = false;
         })
+        // ("/api/login",param).then((res:any)=>{
+        //   console.log(res);
+        //   this.isLogin = false;
+        //   // localStorage.setItem('tsToken',res.data.token);
+        //   // this.setUser(res.data.token);
+        //   this.$router.push("/");
+        // }).catch(()=>{
+        //   this.isLogin = false;
+        // })
       }
     })
   }

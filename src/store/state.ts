@@ -1,5 +1,5 @@
 const state:any = {
-  user:null
+  // user:null
 }
 
 export default state;

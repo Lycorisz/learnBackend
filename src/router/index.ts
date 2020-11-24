@@ -9,14 +9,17 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'Home',
     component: Home,
-
+    // beforeEnter: (to:any,from:any,next:any) => {
+    //    const isLogin = localStorage.token?true:false;
+    //    isLogin?next('/'):next();
+    //   }
   },
   {
     path: '/login',
     name: 'Login',
     component: ()=>import("@/views/Login/Login.vue"),
     beforeEnter: (to:any,from:any,next:any) => {
-       const isLogin = localStorage.tsToken?true:false;
+       const isLogin = localStorage.token?true:false;
        isLogin?next('/'):next();
       }
   },
@@ -36,7 +39,7 @@ const router:any = new VueRouter({
 // router guard
 router.beforeEach((to:any,from:any,next:any)=>{
   // 判断token
-  const isLogin = localStorage.tsToken?true:false;
+  const isLogin = localStorage.token?true:false;
   // 判断路径，如果是login或找回密码页面直接跳转，否则判断token标识，true则继续跳转，false则跳转到login。
   if(to.path=="/login"||to.path == "/password"){
     next();
