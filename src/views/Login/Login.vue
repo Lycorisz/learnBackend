@@ -82,21 +82,12 @@ export default class Login extends Vue{
           let token = this.$cookies.get('JSSESSIONID');
           localStorage.setItem('token',token);
           this.isLogin = false;
-           this.$router.push("/");
+          this.$router.push("/");
         })
         .catch(() => {
           console.error(); 
           this.isLogin = false;
         })
-        // ("/api/login",param).then((res:any)=>{
-        //   console.log(res);
-        //   this.isLogin = false;
-        //   // localStorage.setItem('tsToken',res.data.token);
-        //   // this.setUser(res.data.token);
-        //   this.$router.push("/");
-        // }).catch(()=>{
-        //   this.isLogin = false;
-        // })
       }
     })
   }
